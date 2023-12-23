@@ -19,6 +19,13 @@
         img {
             max-width: 100%;
             height: auto;
+            transition: transform 0.5s; /* 添加旋转动画效果 */
+        }
+
+        @media (max-width: 767px) {
+            img {
+                transform: rotate(90deg) scale(0.7); /* 在设备显示为手机比例时旋转90°并显示70%大小 */
+            }
         }
     </style>
 </head>
