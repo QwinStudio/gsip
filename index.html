@@ -3,33 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Centered on White Background</title>
+    <title>Image Animation</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
-            background-color: #fff; /* 白色背景 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             overflow: hidden;
         }
 
         img {
-            max-width: 100%;
-            height: auto;
-            transition: transform 0.5s; /* 添加旋转动画效果 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
 
-        @media (max-width: 767px) {
-            img {
-                transform: rotate(90deg) scale(0.7); /* 在设备显示为手机比例时旋转90°并显示70%大小 */
-            }
+        #overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        #overlay h2 {
+            color: black; /* 标题黑色 */
+        }
+
+        #overlay p {
+            color: black; /* 段落文字黑色 */
+            margin: 10px 0; /* 加大段落间距 */
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 60px; /* 加长按钮 */
+            margin: 15px;
+            border: 3px solid #FFBD59;
+            border-radius: 10px;
+            color: #FFBD59;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.5s; /* 添加背景颜色过渡效果 */
+        }
+
+        #confirm {
+            background-color: black;
+            border: none;
+        }
+
+        .button:hover {
+            background-color: #FFBD59; /* 鼠标悬停时的背景颜色 */
+            color: black; /* 鼠标悬停时的文字颜色 */
         }
     </style>
 </head>
 <body>
-    <img src="g.png" alt="G Image">
+    <img id="image" src="1.png" alt="Image">
+    
+    <div id="overlay">
+        <h2>提示</h2>
+        <p>此项目由 Gebit Qwin 开发</p>
+        <p>项目地址: <a href="https://github.com/QwinStudio/gsip">https://github.com/QwinStudio/gsip</a></p>
+        <button class="button" onclick="cancel()">取消</button>
+        <button id="confirm" class="button" onclick="confirm()">确认</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const imageElement = document.getElementById('image');
+            const overlay = document.getElementById('overlay');
+            const images = ['1.png', '2.png', '3.png', '4.png'];
+            let currentIndex = 0;
+
+            function fadeIn() {
+                imageElement.src = images[currentIndex];
+                imageElement.style.opacity = '1';
+
+                setTimeout(() => {
+                    if (currentIndex === 3) {
+                        // 显示弹窗
+                        overlay.style.display = 'block';
+                    } else {
+                        // 仍有下一张图片时执行fadeOut
+                        fadeOut();
+                    }
+                }, currentIndex === 1 ? 2000 : (currentIndex === 2 ? 1000 : 2000));
+            }
+
+            function fadeOut() {
+                imageElement.style.opacity = '0';
+
+                setTimeout(() => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    fadeIn();
+                }, 1000);
+            }
+
+            function cancel() {
+                // 处理取消按钮点击事件
+                overlay.style.display = 'none';
+                setTimeout(() => {
+                    window.location.href = 'https://gebitqwin.com';
+                }, 100);
+            }
+
+            function confirm() {
+                // 处理确认按钮点击事件
+                setTimeout(() => {
+                    window.location.href = 'https://github.com/QwinStudio/gsip';
+                }, 100);
+            }
+
+            fadeIn();
+        });
+    </script>
 </body>
 </html>
